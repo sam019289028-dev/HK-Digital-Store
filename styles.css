@@ -7056,6 +7056,14 @@ body {
   margin-top: 2rem;
 }
 
+.product-catalog-section .catalog-toolbar h2 {
+  color: #ffffff;
+}
+
+.product-catalog-section .catalog-toolbar p:not(.eyebrow) {
+  color: rgba(255, 255, 255, 0.72);
+}
+
 .product-card {
   transform: translateZ(0);
   transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
