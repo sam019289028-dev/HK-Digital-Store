@@ -596,7 +596,7 @@ function renderProducts(target, list) {
   if (countNode) {
     countNode.textContent = list.length ? `顯示 ${list.length} 件商品` : "沒有符合條件的商品";
   }
-  target.innerHTML = list.map(productCard).join("");
+  target.innerHTML = list.map(featuredProductCard).join("");
   window.requestAnimationFrame?.(() => initLuxuryExperience());
 }
 
@@ -679,7 +679,7 @@ window.HKDigitalStoreAddCart = (productId, button) => {
 
 function initProductLists() {
   const featuredTarget = document.querySelector("[data-featured-products]");
-  renderFeaturedProducts(featuredTarget, products.filter((product) => product.featured).slice(0, 6));
+  renderFeaturedProducts(featuredTarget, products.filter((product) => product.featured).slice(0, 3));
 
   const listTarget = document.querySelector("[data-product-list]");
   renderProducts(listTarget, products);

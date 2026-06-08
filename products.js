@@ -152,7 +152,7 @@ function renderSupabaseProducts(target, products) {
     countNode.textContent = products.length ? `顯示 ${products.length} 件商品` : "沒有符合條件的商品";
   }
   target.innerHTML = products.length
-    ? products.map(supabaseProductCard).join("")
+    ? products.map(supabaseFeaturedProductCard).join("")
     : `
       <div class="cart-empty-state product-empty-state">
         <div class="empty-icon">HD</div>
@@ -427,7 +427,7 @@ async function initSupabaseProductSections() {
   }
 
   if (featuredTarget) {
-    renderSupabaseFeaturedProducts(featuredTarget, allProducts.slice(0, 6));
+    renderSupabaseFeaturedProducts(featuredTarget, allProducts.slice(0, 3));
   }
 
   bindSupabaseProductActions();
