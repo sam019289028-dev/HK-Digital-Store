@@ -572,6 +572,24 @@ function productCard(product) {
   `;
 }
 
+function featuredProductCard(product) {
+  const icon = getProductIcon(product);
+  const fallback = String(product.name || "?").trim().slice(0, 1);
+  return `
+    <article class="product-card featured-logo-card ${product.visual}">
+      <a class="featured-logo-link" href="product.html?id=${product.id}" aria-label="查看 ${product.name} 方案">
+        <div class="featured-logo-mark">
+          ${icon ? `<img src="${icon}" alt="${product.name}" loading="lazy" onerror="this.replaceWith(document.createTextNode('${fallback}'))">` : `<span>${fallback}</span>`}
+        </div>
+        <div class="featured-logo-footer">
+          <span class="featured-logo-price">${formatStartPrice(product.price)}</span>
+          <span class="featured-logo-action">查看方案</span>
+        </div>
+      </a>
+    </article>
+  `;
+}
+
 function renderProducts(target, list) {
   if (!target) return;
   const countNode = document.querySelector("[data-product-count]");
@@ -579,6 +597,12 @@ function renderProducts(target, list) {
     countNode.textContent = list.length ? `顯示 ${list.length} 件商品` : "沒有符合條件的商品";
   }
   target.innerHTML = list.map(productCard).join("");
+  window.requestAnimationFrame?.(() => initLuxuryExperience());
+}
+
+function renderFeaturedProducts(target, list) {
+  if (!target) return;
+  target.innerHTML = list.map(featuredProductCard).join("");
   window.requestAnimationFrame?.(() => initLuxuryExperience());
 }
 
@@ -655,10 +679,12 @@ window.HKDigitalStoreAddCart = (productId, button) => {
 
 function initProductLists() {
   const featuredTarget = document.querySelector("[data-featured-products]");
-  renderProducts(featuredTarget, products.filter((product) => product.featured).slice(0, 4));
+  renderFeaturedProducts(featuredTarget, products.filter((product) => product.featured).slice(0, 6));
 
   const listTarget = document.querySelector("[data-product-list]");
   renderProducts(listTarget, products);
+  const params = new URLSearchParams(window.location.search);
+  const requestedSearch = params.get("search");
 
   document.querySelectorAll("[data-filter]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -669,9 +695,17 @@ function initProductLists() {
   });
 
   const searchInput = document.querySelector("[data-product-search]");
+  if (searchInput && requestedSearch && !searchInput.value) {
+    searchInput.value = requestedSearch;
+  }
+
   if (searchInput && searchInput.dataset.localSearchBound !== "true") {
     searchInput.dataset.localSearchBound = "true";
     searchInput.addEventListener("input", () => applyLocalProductDiscovery(listTarget));
+  }
+
+  if (requestedSearch) {
+    applyLocalProductDiscovery(listTarget);
   }
 }
 

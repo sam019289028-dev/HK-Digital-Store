@@ -127,6 +127,24 @@ function supabaseProductCard(product) {
   `;
 }
 
+function supabaseFeaturedProductCard(product) {
+  const icon = product.icon || getDefaultProductIcon(product);
+  const fallback = String(product.name || "?").trim().slice(0, 1);
+  return `
+    <article class="product-card featured-logo-card ${product.visual}" data-supabase-product-card="${product.id}">
+      <a class="featured-logo-link" href="product.html?id=${product.id}" aria-label="查看 ${product.name} 方案">
+        <div class="featured-logo-mark">
+          ${icon ? `<img src="${icon}" alt="${product.name}" loading="lazy" onerror="this.replaceWith(document.createTextNode('${fallback}'))">` : `<span>${fallback}</span>`}
+        </div>
+        <div class="featured-logo-footer">
+          <span class="featured-logo-price">${formatProductPrice(product.price)}</span>
+          <span class="featured-logo-action">查看方案</span>
+        </div>
+      </a>
+    </article>
+  `;
+}
+
 function renderSupabaseProducts(target, products) {
   if (!target) return;
   const countNode = document.querySelector("[data-product-count]");
@@ -143,6 +161,13 @@ function renderSupabaseProducts(target, products) {
         <a class="button primary" href="contact.html">聯絡客服</a>
       </div>
     `;
+}
+
+function renderSupabaseFeaturedProducts(target, products) {
+  if (!target) return;
+  target.innerHTML = products.length
+    ? products.map(supabaseFeaturedProductCard).join("")
+    : "";
 }
 
 function renderSupabaseProductLoading(target, count = 6) {
@@ -344,6 +369,7 @@ function bindSupabaseProductDiscovery(products) {
 
   const params = new URLSearchParams(window.location.search);
   const requestedCategory = params.get("category");
+  const requestedSearch = params.get("search");
   if (requestedCategory) {
     const canonicalRequestedCategory = getCanonicalProductFilter(requestedCategory);
     document.querySelectorAll("[data-filter]").forEach((button) => {
@@ -366,6 +392,10 @@ function bindSupabaseProductDiscovery(products) {
   });
 
   const searchInput = document.querySelector("[data-product-search]");
+  if (searchInput && requestedSearch && !searchInput.value) {
+    searchInput.value = requestedSearch;
+  }
+
   if (searchInput && searchInput.dataset.supabaseSearchBound !== "true") {
     searchInput.dataset.supabaseSearchBound = "true";
     searchInput.addEventListener("input", () => applySupabaseProductDiscovery(products));
@@ -397,7 +427,7 @@ async function initSupabaseProductSections() {
   }
 
   if (featuredTarget) {
-    renderSupabaseProducts(featuredTarget, allProducts.slice(0, 6));
+    renderSupabaseFeaturedProducts(featuredTarget, allProducts.slice(0, 6));
   }
 
   bindSupabaseProductActions();
