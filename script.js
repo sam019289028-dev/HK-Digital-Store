@@ -123,6 +123,7 @@ const products = [
     delivery: "客服確認後提供訂閱啟用安排",
     badge: "Video Plan",
     visual: "visual-youtube",
+    icon: "assets/youtube-icon.svg",
     tags: ["多平台", "需確認地區"],
     plans: ["1個月", "3個月", "12個月"],
     afterSales: "提供方案確認與啟用跟進，帳戶限制需先核對。",
@@ -312,6 +313,7 @@ function getProductBrand(product) {
   if (textIdentity.includes("gemini")) return "gemini";
   if (textIdentity.includes("grok")) return "grok";
   if (textIdentity.includes("spotify")) return "spotify";
+  if (textIdentity.includes("youtube")) return "youtube";
   if (textIdentity.includes("perplexity")) return "perplexity";
   if (textIdentity.includes("netflix")) return "netflix";
   if (isXProduct) return "x";
@@ -323,6 +325,7 @@ function getProductBrand(product) {
   if (visualIdentity.includes("gemini")) return "gemini";
   if (visualIdentity.includes("grok")) return "grok";
   if (visualIdentity.includes("spotify")) return "spotify";
+  if (visualIdentity.includes("youtube")) return "youtube";
   if (visualIdentity.includes("perplexity")) return "perplexity";
   if (visualIdentity.includes("netflix")) return "netflix";
   if (visualIdentity.includes("visual-x") || visualIdentity === "x") return "x";
@@ -339,6 +342,7 @@ function getProductIcon(product) {
   if (brand === "gemini") return "assets/gemini-icon.svg";
   if (brand === "grok") return "assets/grok-icon.svg";
   if (brand === "spotify") return "assets/spotify-icon.svg";
+  if (brand === "youtube") return "assets/youtube-icon.svg";
   if (brand === "perplexity") return "assets/perplexity-icon.svg";
   if (brand === "netflix") return "assets/netflix-icon.svg";
   if (brand === "x") return "assets/x-icon.svg";

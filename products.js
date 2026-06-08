@@ -10,6 +10,7 @@ function getDefaultProductIcon(product) {
   if (identity.includes("gemini")) return "assets/gemini-icon.svg";
   if (identity.includes("grok")) return "assets/grok-icon.svg";
   if (identity.includes("spotify")) return "assets/spotify-icon.svg";
+  if (identity.includes("youtube")) return "assets/youtube-icon.svg";
   if (identity.includes("perplexity")) return "assets/perplexity-icon.svg";
   if (identity.includes("netflix")) return "assets/netflix-icon.svg";
   if (isXProduct) return "assets/x-icon.svg";
