@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 160" role="img" aria-label="PayMe">
+  <rect width="420" height="160" rx="32" fill="#fff"/>
+  <path d="M68 111V48h39c18 0 30 11 30 27s-12 27-30 27H88v9H68Zm20-27h17c7 0 12-3 12-9s-5-9-12-9H88v18Z" fill="#e7152f"/>
+  <text x="152" y="98" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="800" fill="#e7152f">PayMe</text>
+</svg>

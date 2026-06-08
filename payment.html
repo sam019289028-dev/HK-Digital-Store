@@ -1,0 +1,138 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>完成付款 | HK Digital Store</title>
+  <link rel="stylesheet" href="styles.css?v=20260608-brand-icons-v7">
+</head>
+<body class="payment-page">
+  <header class="site-header checkout-header">
+    <a class="brand" href="index.html"><span class="brand-mark">HD</span><span>HK Digital Store</span></a>
+    <button class="nav-toggle" type="button" aria-label="打開選單">☰</button>
+    <nav class="site-nav" aria-label="主要導覽">
+      <a class="cart-link" href="cart.html">購物車 <span data-cart-count>0</span></a>
+    </nav>
+  </header>
+
+  <main class="payment-main">
+    <section class="payment-hero">
+      <p class="eyebrow">Payment</p>
+      <h1>完成付款。</h1>
+      <p>請根據以下收款資料完成付款，付款後提交訂單並上傳截圖。</p>
+      <div class="payment-progress" aria-label="付款流程">
+        <span class="done">選擇商品</span>
+        <span class="done">登入/註冊</span>
+        <span class="active">確認金額並付款</span>
+        <span>提交付款資料</span>
+        <span>人工確認發貨</span>
+      </div>
+      <figure class="payment-trust-visual">
+        <img src="assets/premium-support-trust.png" alt="付款確認與訂單追蹤">
+        <figcaption>
+          <span>Payment care</span>
+          <strong>保留截圖，客服按訂單脈絡跟進。</strong>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="payment-layout">
+      <article class="payment-panel payment-method-panel">
+        <div class="payment-panel-title">
+          <p class="eyebrow">METHOD</p>
+          <h2>付款方式</h2>
+          <p data-payment-display-name>FPS</p>
+        </div>
+
+        <div class="qr-card">
+          <div class="qr-frame" data-payment-qr>
+            <span>QR</span>
+            <p>請在 paymentMethods 設定收款二維碼圖片</p>
+          </div>
+          <small>掃描二維碼付款</small>
+        </div>
+
+        <div class="payment-fields" data-payment-fields></div>
+
+        <form class="order-contact-form" data-supabase-order-form>
+          <a class="button ghost" href="cart.html#checkout-payment-method">更改付款方式</a>
+          <button class="button primary" type="submit" data-submit-order>提交訂單</button>
+          <p class="form-result" data-order-submit-result role="status"></p>
+        </form>
+
+        <section class="payment-upload-card" data-payment-upload-section hidden>
+          <div>
+            <p class="eyebrow">Payment Proof</p>
+            <h3>我已付款，提交付款截圖</h3>
+            <p>請上傳 JPG、PNG 或 WEBP 圖片，客服會根據截圖跟進付款狀態。</p>
+          </div>
+          <form class="payment-upload-form" data-payment-upload-form>
+            <input type="hidden" name="order_id" data-upload-order-id>
+            <label>
+              付款截圖
+              <input type="file" name="payment_screenshot" accept="image/jpeg,image/png,image/webp" required>
+            </label>
+            <button class="button primary" type="submit" data-submit-screenshot>提交付款截圖</button>
+            <p class="form-result" data-upload-result role="status"></p>
+          </form>
+        </section>
+
+        <div class="payment-warning">
+          <strong>付款提醒</strong>
+          <p>付款前請確認收款人、金額和付款方式。付款完成後請保留截圖，並提交訂單資料或聯絡客服。</p>
+          <p>請不要提供銀行密碼、帳戶密碼、一次性驗證碼或其他敏感資料。</p>
+        </div>
+
+        <p class="form-result" data-payment-result role="status"></p>
+      </article>
+
+      <aside class="payment-panel payment-amount-card">
+        <p class="eyebrow">AMOUNT DUE</p>
+        <h2>應付金額</h2>
+        <strong data-payment-amount>HK$158.00</strong>
+        <div class="payment-product-due">
+          <div class="payment-product-thumb" data-payment-product-thumb hidden></div>
+          <div>
+            <span>商品：</span>
+            <strong data-order-product-name>待確認商品</strong>
+          </div>
+        </div>
+        <dl>
+          <div>
+            <dt>付款狀態：</dt>
+            <dd>等待付款</dd>
+          </div>
+          <div>
+            <dt>付款方式：</dt>
+            <dd data-payment-method-name>FPS</dd>
+          </div>
+        </dl>
+        <p>請確認金額正確後再付款。</p>
+        <div class="payment-safe-list">
+          <span>金額核對</span>
+          <span>收款人核對</span>
+          <span>付款截圖跟進</span>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer checkout-footer">
+    <p>© 2026 HK Digital Store. 本網站所有標示之價格以港幣（HKD）計算。</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+<script src="script.js?v=20260608-brand-icons-v7"></script>
+  <script src="orders.js"></script>
+  <script src="upload.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+

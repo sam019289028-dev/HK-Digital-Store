@@ -1,0 +1,35 @@
+<svg width="900" height="1200" viewBox="0 0 900 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="1200" rx="34" fill="#F4EFE7"/>
+  <rect x="34" y="34" width="832" height="1132" rx="28" fill="#F8F4EC" stroke="#D8C8B6" stroke-width="2"/>
+  <rect x="80" y="82" width="760" height="70" rx="18" fill="#161922"/>
+  <text x="112" y="128" fill="#F6EDE3" font-family="Arial, sans-serif" font-size="28" font-weight="700">Claude</text>
+  <text x="710" y="128" fill="#FF7A2F" font-family="Arial, sans-serif" font-size="22" font-weight="700">PRO</text>
+
+  <g transform="translate(116 214)">
+    <circle cx="64" cy="64" r="62" fill="#D97730"/>
+    <path d="M64 18L76 50L110 38L92 68L122 86L86 88L94 124L64 100L34 124L42 88L6 86L36 68L18 38L52 50L64 18Z" fill="#F8F4EC"/>
+  </g>
+
+  <text x="116" y="420" fill="#151821" font-family="Arial, sans-serif" font-size="118" font-weight="800">Claude</text>
+  <text x="120" y="486" fill="#7B5E48" font-family="Arial, sans-serif" font-size="34" font-weight="700">AI subscription service</text>
+
+  <rect x="116" y="560" width="668" height="250" rx="30" fill="#D97730"/>
+  <rect x="142" y="586" width="616" height="198" rx="22" fill="#E88A42"/>
+  <text x="164" y="660" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="54" font-weight="800">Monthly Card</text>
+  <text x="164" y="716" fill="#FFF5EB" font-family="Arial, sans-serif" font-size="28" font-weight="700">1 Month / 3 Months / 12 Months</text>
+  <rect x="602" y="624" width="100" height="100" rx="22" fill="#F8F4EC" opacity="0.96"/>
+  <path d="M652 642L662 670L692 660L676 686L702 704L672 705L680 735L652 716L624 735L632 705L602 704L628 686L612 660L642 670L652 642Z" fill="#D97730"/>
+
+  <g transform="translate(116 884)">
+    <rect width="668" height="76" rx="18" fill="#232936"/>
+    <text x="26" y="49" fill="#F8F4EC" font-family="Arial, sans-serif" font-size="28" font-weight="700">Claude Pro activation</text>
+    <text x="500" y="49" fill="#FF8A3D" font-family="Arial, sans-serif" font-size="30" font-weight="800">HK$158</text>
+  </g>
+  <g transform="translate(116 986)">
+    <rect width="668" height="76" rx="18" fill="#232936"/>
+    <text x="26" y="49" fill="#F8F4EC" font-family="Arial, sans-serif" font-size="28" font-weight="700">Claude Max options</text>
+    <text x="500" y="49" fill="#FF8A3D" font-family="Arial, sans-serif" font-size="30" font-weight="800">Ask</text>
+  </g>
+
+  <text x="116" y="1118" fill="#7B5E48" font-family="Arial, sans-serif" font-size="22" font-weight="700">Confirm account region and available plan before ordering</text>
+</svg>

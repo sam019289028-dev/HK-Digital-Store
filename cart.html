@@ -1,0 +1,218 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>結帳 | HK Digital Store</title>
+  <link rel="stylesheet" href="styles.css?v=20260608-brand-icons-v7">
+</head>
+<body class="checkout-page">
+  <header class="site-header checkout-header">
+    <a class="brand" href="index.html"><span class="brand-mark">HD</span><span>HK Digital Store</span></a>
+    <button class="nav-toggle" type="button" aria-label="打開選單">☰</button>
+    <nav class="site-nav" aria-label="主要導覽">
+      <a class="cart-link active" href="cart.html">購物車 <span data-cart-count>0</span></a>
+    </nav>
+  </header>
+
+  <main class="checkout-main-page">
+    <section class="checkout-title">
+      <h1>結帳</h1>
+      <div class="checkout-login-strip">
+        <span class="checkout-user-icon"></span>
+        <p>以你的 HK Digital Store 帳戶登入？</p>
+        <a class="checkout-login-link" href="login.html">點擊登入以自動填寫資料</a>
+      </div>
+    </section>
+
+    <section class="checkout-shell">
+      <form id="checkout-form" class="checkout-form-stack" data-order-form>
+        <section class="checkout-card">
+          <div class="checkout-card-title">
+            <span>1</span>
+            <div>
+              <h2>聯絡資料</h2>
+              <p>客服會用以下方式跟進付款和交付安排。</p>
+            </div>
+          </div>
+          <label>
+            電郵地址 *
+            <input type="email" name="email" placeholder="example@gmail.com" required>
+          </label>
+          <label>
+            聯絡電話 / WhatsApp *
+            <input type="text" name="contact_value" placeholder="+852  1234 5678" autocomplete="tel" required>
+          </label>
+        </section>
+
+        <section class="checkout-card">
+          <div class="checkout-card-title">
+            <span>2</span>
+            <div>
+              <h2>發貨資訊（選填）</h2>
+              <p>請提供用於發貨或綁定產品的所需資訊。</p>
+            </div>
+          </div>
+          <div class="checkout-product-note" data-checkout-product-note>
+            <strong>請先選擇商品</strong>
+          </div>
+          <label>
+            綁定電郵（選填）
+            <input type="email" name="bindEmail" placeholder="請輸入需要綁定的電郵地址">
+          </label>
+        </section>
+
+        <section class="checkout-card">
+          <div class="checkout-card-title">
+            <span>3</span>
+            <div>
+              <h2>額外資訊</h2>
+              <p>有特別方案、時間或平台要求，可以在這裡補充。</p>
+            </div>
+          </div>
+          <label>
+            訂單備註
+            <textarea name="note" rows="4" placeholder="選填：訂單備註..."></textarea>
+          </label>
+        </section>
+
+        <section class="checkout-card" id="checkout-payment-method">
+          <div class="checkout-card-title">
+            <span>4</span>
+            <div>
+              <h2>付款方式</h2>
+              <p>提交後客服會再確認可用付款方式。</p>
+            </div>
+          </div>
+          <div class="payment-method-grid">
+            <label class="payment-method payment-logo-card">
+              <input type="radio" name="payment" value="PayMe" required>
+              <img src="assets/payment-payme.svg" alt="PayMe">
+              <span>PayMe</span>
+            </label>
+            <label class="payment-method payment-logo-card">
+              <input type="radio" name="payment" value="FPS">
+              <img src="assets/payment-fps.svg" alt="FPS">
+              <span>FPS</span>
+            </label>
+            <label class="payment-method payment-logo-card">
+              <input type="radio" name="payment" value="AlipayHK">
+              <img src="assets/payment-alipayhk.svg" alt="AlipayHK">
+              <span>AlipayHK</span>
+            </label>
+            <label class="payment-method payment-logo-card">
+              <input type="radio" name="payment" value="Bank Transfer">
+              <img src="assets/payment-bank-transfer.svg" alt="Bank Transfer">
+              <span>銀行轉賬</span>
+            </label>
+            <label class="payment-method payment-logo-card">
+              <input type="radio" name="payment" value="WeChat Pay">
+              <img src="assets/payment-wechatpay.svg" alt="WeChat Pay">
+              <span>WeChat Pay</span>
+            </label>
+            <label class="payment-method payment-logo-card">
+              <input type="radio" name="payment" value="Binance Pay">
+              <img src="assets/payment-binance.svg" alt="Binance Pay">
+              <span>Binance Pay</span>
+            </label>
+          </div>
+        </section>
+
+        <p class="form-result" data-form-result role="status"></p>
+      </form>
+
+      <aside class="checkout-summary-card" aria-label="訂單總計">
+        <div class="summary-card-head">
+          <div>
+            <p class="eyebrow">Order Summary</p>
+            <h2>訂單總計</h2>
+          </div>
+          <span>HKD</span>
+        </div>
+        <div data-cart-items></div>
+        <div class="checkout-summary-box">
+          <div><span>小計</span><strong data-checkout-subtotal>HK$0</strong></div>
+          <div class="checkout-grand-total"><span>總計</span><strong data-checkout-total>HK$0</strong></div>
+        </div>
+        <div class="checkout-assurance">
+          <span>付款前請確認收款人與金額</span>
+          <span>不要提供密碼或驗證碼</span>
+        </div>
+        <label class="checkout-terms">
+          <input type="checkbox" name="terms" form="checkout-form" required>
+          <span>我已閱讀並接受 <a href="faq.html">銷售條款</a> 與 <a href="faq.html">隱私政策</a>。</span>
+        </label>
+        <button class="button primary wide checkout-submit-button" type="submit" form="checkout-form">確認結帳</button>
+        <p class="checkout-submit-note">付款前請再核對商品、金額與收款資料。</p>
+      </aside>
+    </section>
+
+    <section class="section success-section" data-success-state hidden>
+      <div class="success-card">
+        <span class="success-icon">✓</span>
+        <h2>已收到你的訂單</h2>
+        <p>客服會根據你選擇的商品和聯絡方式跟進，請留意你的 WhatsApp / Email / Telegram 訊息。</p>
+        <div class="success-actions">
+          <a class="button primary" href="products.html">繼續瀏覽商品</a>
+          <a class="button ghost" href="index.html">返回首頁</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer checkout-footer">
+    <p>© 2026 HK Digital Store. 本網站所有標示之價格以港幣（HKD）計算。</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+<script src="script.js?v=20260608-brand-icons-v7"></script>
+  <script>
+    (() => {
+      const initPaymentCards = () => {
+        const cards = document.querySelectorAll(".payment-logo-card");
+        if (!cards.length) return;
+
+        const update = () => {
+          cards.forEach((card) => {
+            const input = card.querySelector('input[type="radio"]');
+            card.classList.toggle("selected", Boolean(input && input.checked));
+          });
+        };
+
+        cards.forEach((card) => {
+          const input = card.querySelector('input[type="radio"]');
+          if (!input) return;
+          card.addEventListener("click", () => {
+            input.checked = true;
+            update();
+          });
+        });
+
+        document.addEventListener("click", (event) => {
+          const card = event.target.closest(".payment-logo-card");
+          if (!card) return;
+          const input = card.querySelector('input[type="radio"]');
+          if (!input) return;
+          input.checked = true;
+          update();
+        }, true);
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initPaymentCards);
+      } else {
+        initPaymentCards();
+      }
+    })();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+

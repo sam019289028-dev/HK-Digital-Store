@@ -1,0 +1,111 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>商品列表 | HK Digital Store</title>
+  <link rel="stylesheet" href="styles.css?v=20260608-brand-icons-v7">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">HD</span><span>HK Digital Store</span></a>
+    <button class="nav-toggle" type="button" aria-label="開關選單">☰</button>
+    <nav class="site-nav" aria-label="主要導覽">
+      <a class="cart-link" href="cart.html">購物車 <span data-cart-count>0</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero compact product-page-hero apple-page-hero">
+      <div>
+        <p class="eyebrow">Store</p>
+        <h1>選一個適合你的數碼方案。</h1>
+        <p>從 AI 工具到影音串流，把常用訂閱放在同一個地方比較。價格、地區和交付方式清楚呈現，不確定就先問客服。</p>
+      </div>
+      <aside class="page-hero-panel product-hero-visual-card" aria-label="商品頁信任提示">
+        <img src="assets/premium-category-showcase.png" alt="數碼商品分類展示">
+        <strong>買之前先看清楚</strong>
+        <span>方案、地區、付款、交付都會在下單前再次確認。</span>
+        <div>
+          <em>AI 工具</em>
+          <em>串流娛樂</em>
+          <em>社交平台</em>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section trust-row" aria-label="購買保障">
+      <article>
+        <strong>正規渠道</strong>
+        <span>商品來源與方案先由客服核對</span>
+      </article>
+      <article>
+        <strong>下單前確認</strong>
+        <span>先確認帳號地區、平台和方案</span>
+      </article>
+      <article>
+        <strong>售後跟進</strong>
+        <span>啟用問題可回到客服跟進</span>
+      </article>
+      <article>
+        <strong>支援多平台</strong>
+        <span>AI、影音、社交平台集中查看</span>
+      </article>
+    </section>
+
+    <section class="section product-catalog-section apple-catalog">
+      <div class="catalog-visual-strip">
+        <img src="assets/premium-category-showcase.png" alt="AI、串流、辦公與設計軟件分類展示">
+        <div>
+          <span>Premium Digital Shelf</span>
+          <strong>按用途選平台，按地區核對方案。</strong>
+        </div>
+      </div>
+      <div class="catalog-toolbar">
+        <div>
+          <p class="eyebrow">Shop by category</p>
+          <h2>先選類型，再看方案。</h2>
+        </div>
+        <p>用最少步驟找到商品。每張卡都會顯示起始價、地區確認和交付提示。</p>
+      </div>
+      <div class="store-search-panel" role="search">
+        <label>
+          <span>搜尋商品</span>
+          <input type="search" data-product-search placeholder="搜尋 ChatGPT、Netflix、Spotify..." autocomplete="off">
+        </label>
+        <div class="store-search-hint">
+          <strong data-product-count>正在載入商品</strong>
+          <span>輸入平台名稱或類型，即時縮窄結果。</span>
+        </div>
+      </div>
+      <div class="filter-row" role="tablist" aria-label="商品分類">
+        <button class="chip active" type="button" data-filter="all">全部商品</button>
+        <button class="chip" type="button" data-filter="AI 工具">AI 工具</button>
+        <button class="chip" type="button" data-filter="影音串流">影音串流</button>
+        <button class="chip" type="button" data-filter="社交平台">社交平台</button>
+        <button class="chip" type="button" data-filter="辦公軟件">辦公軟件</button>
+        <button class="chip" type="button" data-filter="設計軟件">設計軟件</button>
+        <button class="chip" type="button" data-filter="蘋果專區">蘋果專區</button>
+      </div>
+      <div class="product-grid" data-product-list></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 HK Digital Store. 下單前請先確認商品地區、方案及交付安排。</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+<script src="script.js?v=20260608-brand-icons-v7"></script>
+  <script src="products.js?v=20260607-category-map"></script>
+</body>
+</html>
+
+
+
+
+
+
+
