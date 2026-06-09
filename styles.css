@@ -10407,6 +10407,108 @@ body:has([data-product-detail]) .site-footer {
   color: #050607 !important;
 }
 
+.admin-page .panel,
+.admin-page .admin-loading-card,
+.admin-page .admin-access-card,
+.admin-loading-card,
+.admin-access-card {
+  border-color: rgba(240, 185, 11, 0.16) !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(240, 185, 11, 0.12), transparent 18rem),
+    radial-gradient(circle at 92% 14%, rgba(14, 165, 233, 0.1), transparent 20rem),
+    linear-gradient(135deg, rgba(8, 11, 17, 0.98), rgba(13, 20, 32, 0.96) 58%, rgba(5, 8, 13, 0.98)) !important;
+  color: #f8fafc !important;
+  box-shadow: 0 32px 92px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.admin-page .admin-loading-card p,
+.admin-page .admin-access-card p {
+  color: rgba(226, 232, 240, 0.72) !important;
+}
+
+.admin-page .admin-access-card h2 {
+  color: #f8fafc !important;
+}
+
+.admin-page .admin-error-card,
+.admin-error-card {
+  border-color: rgba(248, 113, 113, 0.4) !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(248, 113, 113, 0.16), transparent 18rem),
+    linear-gradient(135deg, rgba(31, 12, 16, 0.98), rgba(13, 20, 32, 0.96) 58%, rgba(5, 8, 13, 0.98)) !important;
+}
+
+.admin-page .admin-dashboard {
+  color: #f8fafc !important;
+}
+
+.admin-page .admin-dashboard-head h2 {
+  color: #f8fafc !important;
+}
+
+.admin-page .admin-dashboard-head p,
+.admin-page .admin-dashboard .eyebrow {
+  color: #ffd766 !important;
+}
+
+.admin-page .admin-order-card {
+  border-color: rgba(240, 185, 11, 0.16) !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(240, 185, 11, 0.08), transparent 18rem),
+    linear-gradient(135deg, rgba(10, 15, 24, 0.98), rgba(17, 25, 39, 0.94)) !important;
+  color: #f8fafc !important;
+  box-shadow: 0 24px 74px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.07) !important;
+}
+
+.admin-page .admin-order-top div,
+.admin-page .admin-order-grid div {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  background: rgba(255, 255, 255, 0.055) !important;
+}
+
+.admin-page .admin-order-card span,
+.admin-page .admin-order-card small,
+.admin-page .admin-muted,
+.admin-page .admin-order-form label {
+  color: rgba(226, 232, 240, 0.76) !important;
+}
+
+.admin-page .admin-order-card strong {
+  color: #f8fafc !important;
+}
+
+.admin-page .admin-price {
+  color: #38bdf8 !important;
+}
+
+.admin-page .admin-order-form {
+  border-top-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.admin-page .admin-order-form select,
+.admin-page .admin-order-form textarea {
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  background: rgba(6, 10, 18, 0.92) !important;
+  color: #f8fafc !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+.admin-page .admin-order-form textarea::placeholder {
+  color: rgba(226, 232, 240, 0.45) !important;
+}
+
+.admin-page .admin-order-form select option {
+  background: #0b111d;
+  color: #f8fafc;
+}
+
+.admin-page [data-admin-refresh].button.ghost,
+.admin-page .admin-shot-button.button.ghost {
+  border-color: rgba(240, 185, 11, 0.24) !important;
+  background: rgba(240, 185, 11, 0.1) !important;
+  color: #ffd766 !important;
+}
+
 @media (max-width: 760px) {
   .nav-toggle {
     display: none;
@@ -10456,5 +10558,36 @@ body:has([data-product-detail]) .site-footer {
   .account-menu {
     right: 0;
     left: auto;
+  }
+
+  :is([data-featured-products], .product-catalog-section [data-product-list]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.75rem;
+  }
+
+  :is([data-featured-products], [data-product-list]) .featured-logo-link {
+    padding: 0.7rem;
+  }
+
+  :is([data-featured-products], [data-product-list]) .featured-logo-mark {
+    width: min(82%, 10rem);
+    margin-bottom: 1.75rem;
+  }
+
+  :is([data-featured-products], [data-product-list]) .featured-logo-footer {
+    right: 0.7rem;
+    bottom: 0.7rem;
+    left: 0.7rem;
+    gap: 0.3rem;
+  }
+
+  :is([data-featured-products], [data-product-list]) .featured-logo-price {
+    font-size: clamp(0.78rem, 3vw, 0.98rem);
+    white-space: nowrap;
+  }
+
+  :is([data-featured-products], [data-product-list]) .featured-logo-action {
+    font-size: clamp(0.68rem, 2.8vw, 0.82rem);
+    white-space: nowrap;
   }
 }

@@ -184,12 +184,26 @@ function getOrderItems(order) {
   return adminItems.length ? adminItems : parseOrderProductNameItems(order && order.product_name);
 }
 
+function getOrderItemDisplayName(item) {
+  const productName = String(item && item.productName || "").trim();
+  const plan = String(item && item.plan || "").trim();
+  if (!productName) return plan || "待確認商品";
+  if (!plan) return productName;
+
+  const normalizedName = normalizeOrderProductText(productName);
+  const normalizedPlan = normalizeOrderProductText(plan);
+  const planLooksLikeProduct = normalizedPlan.includes(normalizedName)
+    || /\b(plus|pro|premium|advanced|max|standard|basic)\b/i.test(plan);
+
+  return planLooksLikeProduct ? plan : productName;
+}
+
 function getOrderDisplayName(order) {
   const items = getOrderItems(order);
   if (!items.length) return order && order.product_name ? order.product_name : "待確認商品";
 
   return items
-    .map((item) => `${item.productName}${item.quantity > 1 ? ` x${item.quantity}` : ""}`)
+    .map((item) => `${getOrderItemDisplayName(item)}${item.quantity > 1 ? ` x${item.quantity}` : ""}`)
     .join("、");
 }
 
