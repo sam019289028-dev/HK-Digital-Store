@@ -143,6 +143,56 @@ function getOrderProductTokens(productName) {
     .filter(Boolean);
 }
 
+function parseOrderProductNameItems(productName) {
+  return String(productName || "")
+    .split(/[、,+，]/)
+    .map((token) => {
+      const trimmed = token.trim();
+      if (!trimmed) return null;
+      const quantityMatch = trimmed.match(/\bx\s*(\d+)\b/i);
+      return {
+        productName: trimmed.replace(/\bx\s*\d+\b/i, "").trim(),
+        plan: "",
+        quantity: quantityMatch ? Math.max(1, Number(quantityMatch[1]) || 1) : 1,
+        total: 0
+      };
+    })
+    .filter((item) => item && item.productName);
+}
+
+function parseOrderAdminItems(adminNote) {
+  return String(adminNote || "")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith("- "))
+    .map((line) => {
+      const parts = line.replace(/^-\s*/, "").split(/\s+\/\s+/);
+      const quantityMatch = String(parts[2] || "").match(/x\s*(\d+)/i);
+      const totalMatch = String(parts[3] || "").match(/HK\$\s*([\d.]+)/i);
+      return {
+        productName: String(parts[0] || "").trim(),
+        plan: String(parts[1] || "").trim(),
+        quantity: quantityMatch ? Math.max(1, Number(quantityMatch[1]) || 1) : 1,
+        total: totalMatch ? Number(totalMatch[1]) || 0 : 0
+      };
+    })
+    .filter((item) => item.productName);
+}
+
+function getOrderItems(order) {
+  const adminItems = parseOrderAdminItems(order && order.admin_note);
+  return adminItems.length ? adminItems : parseOrderProductNameItems(order && order.product_name);
+}
+
+function getOrderDisplayName(order) {
+  const items = getOrderItems(order);
+  if (!items.length) return order && order.product_name ? order.product_name : "待確認商品";
+
+  return items
+    .map((item) => `${item.productName}${item.quantity > 1 ? ` x${item.quantity}` : ""}`)
+    .join("、");
+}
+
 function findOrderProductByName(token) {
   const normalizedToken = normalizeOrderProductText(token);
   if (!normalizedToken) return null;
@@ -178,23 +228,29 @@ function findOrderProductByName(token) {
 }
 
 function buildCartFromOrder(order) {
-  const tokens = getOrderProductTokens(order.product_name);
-  if (!tokens.length) return [];
+  const items = getOrderItems(order);
+  if (!items.length) return [];
 
   const amount = Number(order.amount_hkd) || 0;
-  const fallbackPrice = tokens.length && amount ? Math.round((amount / tokens.length) * 100) / 100 : 0;
+  const totalQuantity = items.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
+  const fallbackPrice = totalQuantity && amount ? Math.round((amount / totalQuantity) * 100) / 100 : 0;
 
-  return tokens.map((token) => {
-    const product = findOrderProductByName(token);
+  return items.flatMap((item) => {
+    const product = findOrderProductByName(item.productName);
     if (!product) return null;
 
-    return {
+    const quantity = Math.max(1, Number(item.quantity) || 1);
+    const unitPrice = item.total
+      ? Math.round((Number(item.total) / quantity) * 100) / 100
+      : fallbackPrice || product.price || product.price_hkd || 0;
+
+    return Array.from({ length: quantity }, () => ({
       id: product.id,
-      plan: token,
-      price: fallbackPrice || product.price || product.price_hkd || 0,
+      plan: item.plan || item.productName,
+      price: unitPrice,
       region: product.region || "",
       usage: null
-    };
+    }));
   }).filter(Boolean);
 }
 
@@ -213,7 +269,7 @@ function resumeOrderInCart(order) {
   localStorage.setItem(orderCartKey, JSON.stringify(cart));
   sessionStorage.setItem(orderPaymentSessionKey, JSON.stringify({
     amount: Number(order.amount_hkd) || cart.reduce((sum, item) => sum + (Number(item.price) || 0), 0),
-    productName: order.product_name || getCartProductName(),
+    productName: getOrderDisplayName(order) || getCartProductName(),
     method: "FPS",
     resumedOrderId: order.id || "",
     resumedAt: new Date().toISOString()
@@ -298,8 +354,10 @@ async function renderOrderRows(orders) {
       id: order.id || "",
       product_name: order.product_name || "",
       amount_hkd: order.amount_hkd || 0,
-      status: order.status || orderStatusPendingPayment
+      status: order.status || orderStatusPendingPayment,
+      admin_note: order.admin_note || ""
     }));
+    const displayName = getOrderDisplayName(order);
     const screenshotBlock = screenshotPath
       ? `
         <strong class="order-status">已提交</strong>
@@ -311,7 +369,7 @@ async function renderOrderRows(orders) {
       <article class="order-record-card${canResume ? " is-resumable" : ""}" ${canResume ? `role="button" tabindex="0" data-resume-order="${resumePayload}" aria-label="返回購物車處理待付款訂單"` : ""}>
         <div>
           <span>商品名稱</span>
-          <strong>${escapeOrderHtml(order.product_name || "待確認商品")}</strong>
+          <strong>${escapeOrderHtml(displayName)}</strong>
         </div>
         <div>
           <span>金額</span>
@@ -353,7 +411,7 @@ async function fetchCurrentUserOrders() {
 
   const { data, error } = await client
     .from("orders")
-    .select("id, product_name, amount_hkd, status, created_at, payment_screenshot_url")
+    .select("id, product_name, amount_hkd, status, created_at, payment_screenshot_url, admin_note")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
@@ -465,8 +523,10 @@ function bindSupabaseOrderLogout() {
     button.dataset.bound = "true";
     button.addEventListener("click", async () => {
       if (window.hkSupabaseAuth && typeof window.hkSupabaseAuth.logout === "function") {
-        await window.hkSupabaseAuth.logout();
+        const didLogout = await window.hkSupabaseAuth.logout();
+        if (didLogout === false) return;
       } else if (window.supabaseClient) {
+        if (!window.confirm("確認登出？")) return;
         await window.supabaseClient.auth.signOut();
       }
       window.location.href = "index.html";

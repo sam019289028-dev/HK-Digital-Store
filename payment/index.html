@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>完成付款 | HK Digital Store</title>
-  <link rel="stylesheet" href="/styles.css?v=20260608-brand-icons-v7">
+  <link rel="stylesheet" href="../styles.css?v=20260608-brand-icons-v7">
 </head>
 <body class="payment-page">
   <header class="site-header checkout-header">
-    <a class="brand" href="/index.html"><span class="brand-mark">HD</span><span>HK Digital Store</span></a>
+    <a class="brand" href="../index.html"><span class="brand-mark">HD</span><span>HK Digital Store</span></a>
     <button class="nav-toggle" type="button" aria-label="打開選單">☰</button>
     <nav class="site-nav" aria-label="主要導覽">
-      <a class="cart-link" href="/cart.html">購物車 <span data-cart-count>0</span></a>
+      <a class="cart-link" href="../cart.html">購物車 <span data-cart-count>0</span></a>
     </nav>
   </header>
 
@@ -28,7 +28,7 @@
         <span>人工確認發貨</span>
       </div>
       <figure class="payment-trust-visual">
-        <img src="/assets/premium-support-trust.png" alt="付款確認與訂單追蹤">
+        <img src="../assets/premium-support-trust.png" alt="付款確認與訂單追蹤">
         <figcaption>
           <span>Payment care</span>
           <strong>保留截圖，客服按訂單脈絡跟進。</strong>
@@ -55,7 +55,7 @@
         <div class="payment-fields" data-payment-fields></div>
 
         <form class="order-contact-form" data-supabase-order-form>
-          <a class="button ghost" href="/cart.html#checkout-payment-method">更改付款方式</a>
+          <a class="button ghost" href="../cart.html#checkout-payment-method">更改付款方式</a>
           <button class="button primary" type="submit" data-submit-order>提交訂單</button>
           <p class="form-result" data-order-submit-result role="status"></p>
         </form>
@@ -90,13 +90,6 @@
         <p class="eyebrow">AMOUNT DUE</p>
         <h2>應付金額</h2>
         <strong data-payment-amount>HK$158.00</strong>
-        <div class="payment-product-due">
-          <div class="payment-product-thumb" data-payment-product-thumb hidden></div>
-          <div>
-            <span>商品：</span>
-            <strong data-order-product-name>待確認商品</strong>
-          </div>
-        </div>
         <dl>
           <div>
             <dt>付款狀態：</dt>
@@ -122,15 +115,13 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/supabase-config.js"></script>
-    <script src="/auth.js"></script>
-<script src="/script.js?v=20260608-brand-icons-v7"></script>
-  <script src="/orders.js"></script>
-  <script src="/upload.js"></script>
+  <script src="../supabase-config.js"></script>
+    <script src="../auth.js"></script>
+<script src="../script.js?v=20260609-local-path-fix"></script>
+  <script src="../orders.js"></script>
+  <script src="../upload.js"></script>
 </body>
 </html>
-
-
 
 
 

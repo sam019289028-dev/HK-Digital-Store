@@ -155,6 +155,16 @@ const paymentSessionKey = "hkDigitalStorePaymentSession";
 let pendingCartIntent = null;
 let cartDrawerScrollY = 0;
 
+function siteHref(path) {
+  const cleanPath = String(path || "").replace(/^\/+/, "");
+  if (!cleanPath || /^(https?:|mailto:|tel:|#)/i.test(cleanPath)) return path;
+  if (window.location.protocol === "file:") {
+    const inSubDirectory = /\/payment(\/|$)/i.test(window.location.pathname.replace(/\\/g, "/"));
+    return `${inSubDirectory ? "../" : ""}${cleanPath}`;
+  }
+  return `/${cleanPath}`;
+}
+
 const paymentMethods = {
   FPS: {
     name: "FPS",
@@ -260,13 +270,18 @@ function setCurrentUser(user) {
   updateAuthNav();
 }
 
+function confirmLogout() {
+  return window.confirm("確認登出？");
+}
+
 function clearCurrentUser() {
   if (window.hkSupabaseAuth) {
-    window.hkSupabaseAuth.logout();
-    return;
+    return window.hkSupabaseAuth.logout();
   }
+  if (!confirmLogout()) return false;
   localStorage.removeItem(currentUserKey);
   updateAuthNav();
+  return true;
 }
 
 function isLoggedIn() {
@@ -862,7 +877,7 @@ function updateAuthNav() {
     const wrapper = document.createElement("div");
     wrapper.className = "header-actions";
     wrapper.innerHTML = `
-      <a class="header-icon cart-icon" href="/cart.html" aria-label="購物車" data-open-cart-drawer>
+      <a class="header-icon cart-icon" href="${siteHref("cart.html")}" aria-label="購物車" data-open-cart-drawer>
         ${iconSvg("cart")}
         <span data-cart-count>${getCart().length}</span>
       </a>
@@ -870,9 +885,9 @@ function updateAuthNav() {
         ? `<div class="account-menu-wrap">
             <button class="header-icon" type="button" aria-label="我的帳戶" aria-expanded="false" data-account-menu-toggle>${iconSvg("user")}</button>
             <div class="account-menu" data-account-menu>
-              <a href="/account.html">我的帳戶</a>
-              <a href="/order-history.html">訂購紀錄</a>
-              <a href="/recent-viewed.html">最近瀏覽</a>
+              <a href="${siteHref("account.html")}">我的帳戶</a>
+              <a href="${siteHref("order-history.html")}">訂購紀錄</a>
+              <a href="${siteHref("recent-viewed.html")}">最近瀏覽</a>
               <button type="button" data-logout>登出</button>
             </div>
           </div>`
@@ -910,8 +925,9 @@ function updateAuthNav() {
   });
 
   document.querySelectorAll("[data-logout]").forEach((button) => {
-    button.addEventListener("click", () => {
-      clearCurrentUser();
+    button.addEventListener("click", async () => {
+      const didLogout = await clearCurrentUser();
+      if (didLogout === false) return;
       showToast("已登出");
       if (["account", "order-history", "recent-viewed"].includes(document.body.dataset.page)) {
         window.location.href = "index.html";
@@ -1665,7 +1681,7 @@ function initOrderForm() {
     submitButton.disabled = true;
     submitButton.textContent = "前往付款...";
     result.textContent = "";
-    window.location.href = "payment/";
+    window.location.href = siteHref("payment/index.html");
   });
 }
 
@@ -1776,7 +1792,7 @@ function initPaymentPage() {
   if (contactButton) {
     contactButton.addEventListener("click", () => {
       if (result) result.textContent = "請聯絡客服確認付款。";
-      window.location.href = "/contact.html";
+      window.location.href = siteHref("contact.html");
     });
   }
 }
@@ -1927,8 +1943,9 @@ function initStandaloneAuthPages() {
   document.querySelectorAll("[data-logout]").forEach((button) => {
     if (button.dataset.logoutBound) return;
     button.dataset.logoutBound = "true";
-    button.addEventListener("click", () => {
-      clearCurrentUser();
+    button.addEventListener("click", async () => {
+      const didLogout = await clearCurrentUser();
+      if (didLogout === false) return;
       showToast("已登出");
       window.location.href = "index.html";
     });
@@ -2025,8 +2042,9 @@ function renderAccountSections() {
   document.querySelectorAll("[data-logout]").forEach((button) => {
     if (button.dataset.logoutBound) return;
     button.dataset.logoutBound = "true";
-    button.addEventListener("click", () => {
-      clearCurrentUser();
+    button.addEventListener("click", async () => {
+      const didLogout = await clearCurrentUser();
+      if (didLogout === false) return;
     });
   });
 }
@@ -2052,13 +2070,13 @@ function ensureStoreCategoryRail() {
   rail.dataset.storeCategoryRail = "";
   rail.setAttribute("aria-label", "商品快捷分類");
   rail.innerHTML = `
-    <a href="/products.html?category=AI 工具">人工智能</a>
-    <a href="/products.html?category=影音串流">串流平台</a>
-    <a href="/products.html?category=社交平台">社交平台</a>
-    <a href="/products.html">辦公軟件</a>
-    <a href="/products.html">設計軟件</a>
-    <a href="/products.html">蘋果專區</a>
-    <a href="/contact.html">客服推薦</a>
+    <a href="${siteHref("products.html?category=AI 工具")}">人工智能</a>
+    <a href="${siteHref("products.html?category=影音串流")}">串流平台</a>
+    <a href="${siteHref("products.html?category=社交平台")}">社交平台</a>
+    <a href="${siteHref("products.html")}">辦公軟件</a>
+    <a href="${siteHref("products.html")}">設計軟件</a>
+    <a href="${siteHref("products.html")}">蘋果專區</a>
+    <a href="${siteHref("contact.html")}">客服推薦</a>
   `;
   const nav = header.querySelector(".site-nav");
   header.insertBefore(rail, nav || null);
@@ -2078,23 +2096,23 @@ function enhanceStoreFooter() {
       </div>
       <div>
         <h3>選購與了解</h3>
-        <a href="/products.html?category=AI 工具">人工智能</a>
-        <a href="/products.html?category=影音串流">串流平台</a>
-        <a href="/products.html?category=社交平台">社交平台</a>
-        <a href="/products.html">所有商品</a>
+        <a href="${siteHref("products.html?category=AI 工具")}">人工智能</a>
+        <a href="${siteHref("products.html?category=影音串流")}">串流平台</a>
+        <a href="${siteHref("products.html?category=社交平台")}">社交平台</a>
+        <a href="${siteHref("products.html")}">所有商品</a>
       </div>
       <div>
         <h3>帳戶</h3>
-        <a href="/account.html">我的帳戶</a>
-        <a href="/order-history.html">我的訂單</a>
-        <a href="/recent-viewed.html">最近瀏覽</a>
-        <a href="/cart.html">購物車</a>
+        <a href="${siteHref("account.html")}">我的帳戶</a>
+        <a href="${siteHref("order-history.html")}">我的訂單</a>
+        <a href="${siteHref("recent-viewed.html")}">最近瀏覽</a>
+        <a href="${siteHref("cart.html")}">購物車</a>
       </div>
       <div>
         <h3>支援</h3>
-        <a href="/faq.html">購買須知</a>
-        <a href="/contact.html">聯絡客服</a>
-        <a href="/about.html">關於我們</a>
+        <a href="${siteHref("faq.html")}">購買須知</a>
+        <a href="${siteHref("contact.html")}">聯絡客服</a>
+        <a href="${siteHref("about.html")}">關於我們</a>
       </div>
     </div>
     <div class="store-footer-bottom">
@@ -2196,6 +2214,7 @@ window.iconSvg = iconSvg;
 window.getCart = getCart;
 window.openCartDrawer = openCartDrawer;
 window.HKDigitalStoreLocalProducts = products;
+window.HKDigitalStoreHref = siteHref;
 window.showToast = showToast;
 window.HKDigitalStoreInitLuxuryExperience = initLuxuryExperience;
 

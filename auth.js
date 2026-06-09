@@ -5,6 +5,17 @@ async function getSupabaseUser() {
   return data.user || null;
 }
 
+function authSiteHref(path) {
+  if (window.HKDigitalStoreHref) return window.HKDigitalStoreHref(path);
+  const cleanPath = String(path || "").replace(/^\/+/, "");
+  if (!cleanPath || /^(https?:|mailto:|tel:|#)/i.test(cleanPath)) return path;
+  if (window.location.protocol === "file:") {
+    const inSubDirectory = /\/payment(\/|$)/i.test(window.location.pathname.replace(/\\/g, "/"));
+    return `${inSubDirectory ? "../" : ""}${cleanPath}`;
+  }
+  return `/${cleanPath}`;
+}
+
 function getCachedSupabaseUser() {
   return window.hkAuthUser || null;
 }
@@ -50,13 +61,16 @@ async function loginWithSupabase({ email, password }) {
   return data;
 }
 
-async function logoutWithSupabase() {
+async function logoutWithSupabase(options = {}) {
+  if (!options.skipConfirm && !window.confirm("確認登出？")) return false;
+
   if (window.supabaseClient) {
     await window.supabaseClient.auth.signOut();
   }
   window.hkAuthUser = null;
   window.dispatchEvent(new CustomEvent("hk-auth-change", { detail: { user: null } }));
-  window.location.href = "index.html";
+  window.location.href = authSiteHref("index.html");
+  return true;
 }
 
 function authErrorMessage(error) {
@@ -80,18 +94,18 @@ function renderSupabaseAuthNav() {
              ${window.iconSvg ? window.iconSvg("user") : "我的"}
            </button>
            <div class="account-menu" data-account-menu>
-             <a href="/account.html">我的帳戶</a>
-             <a href="/order-history.html">訂購紀錄</a>
-             <a href="/recent-viewed.html">最近瀏覽</a>
+             <a href="${authSiteHref("account.html")}">我的帳戶</a>
+             <a href="${authSiteHref("order-history.html")}">訂購紀錄</a>
+             <a href="${authSiteHref("recent-viewed.html")}">最近瀏覽</a>
              <button type="button" data-supabase-logout>登出</button>
            </div>
          </div>`
-      : `<a class="header-icon" href="/login.html" aria-label="登入或註冊">
+      : `<a class="header-icon" href="${authSiteHref("login.html")}" aria-label="登入或註冊">
            ${window.iconSvg ? window.iconSvg("user") : "登入"}
          </a>`;
 
     wrapper.innerHTML = `
-      <a class="header-icon cart-icon" href="/cart.html" aria-label="購物車" data-open-cart-drawer>
+      <a class="header-icon cart-icon" href="${authSiteHref("cart.html")}" aria-label="購物車" data-open-cart-drawer>
         ${window.iconSvg ? window.iconSvg("cart") : "購物車"}
         <span data-cart-count>${window.getCart ? window.getCart().length : 0}</span>
       </a>
