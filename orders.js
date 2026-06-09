@@ -113,6 +113,130 @@ function escapeOrderHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+function getOrderResumeProducts() {
+  const sources = [
+    window.hkSupabaseProducts,
+    window.HKDigitalStoreLocalProducts
+  ].filter(Array.isArray);
+
+  try {
+    const cachedProducts = JSON.parse(localStorage.getItem("hkDigitalStoreProductCache") || "[]");
+    if (Array.isArray(cachedProducts)) sources.push(cachedProducts);
+  } catch (error) {
+    console.warn("Product cache unavailable", error);
+  }
+
+  return sources.flat().filter(Boolean);
+}
+
+function normalizeOrderProductText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/\s+/g, "")
+    .replace(/[()（）[\]【】.,，:：;；|/\\-]/g, "");
+}
+
+function getOrderProductTokens(productName) {
+  return String(productName || "")
+    .split(/[、,+，]/)
+    .map((token) => token.replace(/\bx\s*\d+\b/i, "").trim())
+    .filter(Boolean);
+}
+
+function findOrderProductByName(token) {
+  const normalizedToken = normalizeOrderProductText(token);
+  if (!normalizedToken) return null;
+
+  const products = getOrderResumeProducts();
+  const directMatch = products.find((product) => {
+    const normalizedName = normalizeOrderProductText(product.name);
+    return normalizedName && (
+      normalizedName === normalizedToken
+      || normalizedToken.includes(normalizedName)
+      || normalizedName.includes(normalizedToken)
+    );
+  });
+  if (directMatch) return directMatch;
+
+  const fallbackIds = {
+    chatgpt: "chatgpt-subscription",
+    claude: "claude-subscription",
+    gemini: "gemini-subscription",
+    grok: "grok-subscription",
+    perplexity: "perplexity-subscription",
+    netflix: "netflix-subscription",
+    spotify: "spotify-subscription",
+    youtube: "youtube-subscription",
+    canva: "canva-subscription"
+  };
+  const fallbackKey = Object.keys(fallbackIds).find((key) => normalizedToken.includes(key));
+  if (fallbackKey) {
+    return getOrderResumeProducts().find((product) => product.id === fallbackIds[fallbackKey]) || null;
+  }
+
+  return null;
+}
+
+function buildCartFromOrder(order) {
+  const tokens = getOrderProductTokens(order.product_name);
+  if (!tokens.length) return [];
+
+  const amount = Number(order.amount_hkd) || 0;
+  const fallbackPrice = tokens.length && amount ? Math.round((amount / tokens.length) * 100) / 100 : 0;
+
+  return tokens.map((token) => {
+    const product = findOrderProductByName(token);
+    if (!product) return null;
+
+    return {
+      id: product.id,
+      plan: token,
+      price: fallbackPrice || product.price || product.price_hkd || 0,
+      region: product.region || "",
+      usage: null
+    };
+  }).filter(Boolean);
+}
+
+function isOrderPendingPayment(order) {
+  return String(order.status || orderStatusPendingPayment).trim() === orderStatusPendingPayment;
+}
+
+function resumeOrderInCart(order) {
+  const cart = buildCartFromOrder(order);
+  if (!cart.length) {
+    if (window.showToast) window.showToast("未能還原這張訂單，請重新選擇商品。");
+    window.location.href = "products.html";
+    return;
+  }
+
+  localStorage.setItem(orderCartKey, JSON.stringify(cart));
+  sessionStorage.setItem(orderPaymentSessionKey, JSON.stringify({
+    amount: Number(order.amount_hkd) || cart.reduce((sum, item) => sum + (Number(item.price) || 0), 0),
+    productName: order.product_name || getCartProductName(),
+    method: "FPS",
+    resumedOrderId: order.id || "",
+    resumedAt: new Date().toISOString()
+  }));
+  window.location.href = "cart.html";
+}
+
+function bindResumePendingOrderCards() {
+  document.querySelectorAll("[data-resume-order]").forEach((card) => {
+    if (card.dataset.resumeBound === "true") return;
+    card.dataset.resumeBound = "true";
+    card.addEventListener("click", (event) => {
+      if (event.target.closest("a, button")) return;
+      resumeOrderInCart(JSON.parse(card.dataset.resumeOrder || "{}"));
+    });
+    card.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      resumeOrderInCart(JSON.parse(card.dataset.resumeOrder || "{}"));
+    });
+  });
+}
+
 async function getOrderScreenshotUrl(path) {
   const client = getSupabaseOrdersClient();
   if (!client || !path) return "";
@@ -169,6 +293,13 @@ async function renderOrderRows(orders) {
   const rows = await Promise.all(orders.map(async (order) => {
     const screenshotPath = order.payment_screenshot_url || "";
     const signedUrl = screenshotPath ? await getOrderScreenshotUrl(screenshotPath) : "";
+    const canResume = isOrderPendingPayment(order);
+    const resumePayload = escapeOrderHtml(JSON.stringify({
+      id: order.id || "",
+      product_name: order.product_name || "",
+      amount_hkd: order.amount_hkd || 0,
+      status: order.status || orderStatusPendingPayment
+    }));
     const screenshotBlock = screenshotPath
       ? `
         <strong class="order-status">已提交</strong>
@@ -177,7 +308,7 @@ async function renderOrderRows(orders) {
       : `<strong>未上傳</strong>`;
 
     return `
-      <article class="order-record-card">
+      <article class="order-record-card${canResume ? " is-resumable" : ""}" ${canResume ? `role="button" tabindex="0" data-resume-order="${resumePayload}" aria-label="返回購物車處理待付款訂單"` : ""}>
         <div>
           <span>商品名稱</span>
           <strong>${escapeOrderHtml(order.product_name || "待確認商品")}</strong>
@@ -267,6 +398,7 @@ async function renderAccountOrdersPanel() {
         </div>
       </article>
     `;
+    bindResumePendingOrderCards();
     bindSupabaseOrderLogout();
   } catch (error) {
     panel.innerHTML = `
@@ -306,6 +438,7 @@ async function renderOrderHistoryPanel() {
         ${await renderOrderRows(orders)}
       </article>
     `;
+    bindResumePendingOrderCards();
     bindSupabaseOrderLogout();
   } catch (error) {
     panel.innerHTML = `

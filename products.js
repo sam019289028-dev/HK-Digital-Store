@@ -1,5 +1,7 @@
 const productCacheKey = "hkDigitalStoreProductCache";
 const paymentSessionKeyForProducts = "hkDigitalStorePaymentSession";
+window.HKDigitalStoreUseSupabaseProducts = true;
+let currentSupabaseProducts = [];
 
 function getDefaultProductIcon(product) {
   const identity = `${product?.name || ""} ${product?.category || ""} ${product?.type || ""}`.toLowerCase();
@@ -49,11 +51,22 @@ function normalizeSupabaseProduct(row) {
 }
 
 function saveProductCache(products) {
+  currentSupabaseProducts = products;
   window.hkSupabaseProducts = products;
   try {
     localStorage.setItem(productCacheKey, JSON.stringify(products));
   } catch (error) {
     console.warn("Product cache save failed", error);
+  }
+}
+
+function getCachedSupabaseProducts() {
+  try {
+    const cachedProducts = JSON.parse(localStorage.getItem(productCacheKey) || "[]");
+    return Array.isArray(cachedProducts) ? cachedProducts : [];
+  } catch (error) {
+    console.warn("Product cache read failed", error);
+    return [];
   }
 }
 
@@ -342,9 +355,10 @@ function getActiveProductFilter() {
 
 function applySupabaseProductDiscovery(products) {
   const target = document.querySelector("[data-product-list]");
+  const sourceProducts = Array.isArray(products) ? products : currentSupabaseProducts;
   const filter = getActiveProductFilter();
   const search = getProductSearchText();
-  const filtered = products.filter((product) => {
+  const filtered = sourceProducts.filter((product) => {
     const matchesFilter = productMatchesCategoryFilter(product, filter);
     const haystack = [
       product.name,
@@ -365,6 +379,7 @@ function applySupabaseProductDiscovery(products) {
 }
 
 function bindSupabaseProductDiscovery(products) {
+  currentSupabaseProducts = Array.isArray(products) ? products : currentSupabaseProducts;
   updateProductFilterAvailability(products);
 
   const params = new URLSearchParams(window.location.search);
@@ -387,7 +402,7 @@ function bindSupabaseProductDiscovery(products) {
     button.addEventListener("click", () => {
       document.querySelectorAll("[data-filter]").forEach((item) => item.classList.remove("active"));
       button.classList.add("active");
-      applySupabaseProductDiscovery(products);
+      applySupabaseProductDiscovery();
     });
   });
 
@@ -398,7 +413,7 @@ function bindSupabaseProductDiscovery(products) {
 
   if (searchInput && searchInput.dataset.supabaseSearchBound !== "true") {
     searchInput.dataset.supabaseSearchBound = "true";
-    searchInput.addEventListener("input", () => applySupabaseProductDiscovery(products));
+    searchInput.addEventListener("input", () => applySupabaseProductDiscovery());
   }
 }
 
@@ -407,8 +422,25 @@ async function initSupabaseProductSections() {
   const featuredTarget = document.querySelector("[data-featured-products]");
   if (!productListTarget && !featuredTarget) return;
 
-  renderSupabaseProductLoading(productListTarget, 6);
-  renderSupabaseProductLoading(featuredTarget, 3);
+  const cachedProducts = getCachedSupabaseProducts();
+  if (cachedProducts.length) {
+    currentSupabaseProducts = cachedProducts;
+    window.hkSupabaseProducts = cachedProducts;
+
+    if (productListTarget) {
+      bindSupabaseProductDiscovery(cachedProducts);
+      applySupabaseProductDiscovery(cachedProducts);
+    }
+
+    if (featuredTarget) {
+      renderSupabaseFeaturedProducts(featuredTarget, cachedProducts.slice(0, 3));
+    }
+
+    bindSupabaseProductActions();
+  } else {
+    if (productListTarget) productListTarget.innerHTML = "";
+    if (featuredTarget) featuredTarget.innerHTML = "";
+  }
 
   let allProducts = [];
   try {
@@ -416,8 +448,10 @@ async function initSupabaseProductSections() {
     saveProductCache(allProducts);
   } catch (error) {
     console.warn("Supabase products load failed", error);
-    renderSupabaseProductError(productListTarget, error);
-    renderSupabaseProductError(featuredTarget, error);
+    if (!cachedProducts.length) {
+      renderSupabaseProductError(productListTarget, error);
+      renderSupabaseProductError(featuredTarget, error);
+    }
     return;
   }
 

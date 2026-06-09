@@ -678,6 +678,8 @@ window.HKDigitalStoreAddCart = (productId, button) => {
 };
 
 function initProductLists() {
+  if (window.HKDigitalStoreUseSupabaseProducts) return;
+
   const featuredTarget = document.querySelector("[data-featured-products]");
   renderFeaturedProducts(featuredTarget, products.filter((product) => product.featured).slice(0, 3));
 

@@ -868,7 +868,7 @@ details {
 
 .visual-chatgpt .product-art,
 .visual-chatgpt.detail-art {
-  background: radial-gradient(circle at 80% 20%, rgba(166, 255, 77, 0.28), transparent 7rem), linear-gradient(135deg, #12352e, #1ba77a 58%, #1a2230);
+  background: radial-gradient(circle at 80% 20%, rgba(148, 163, 184, 0.18), transparent 7rem), linear-gradient(135deg, #070b12, #101827 58%, #05070b);
 }
 
 .visual-claude .product-art,
@@ -888,7 +888,7 @@ details {
 
 .visual-perplexity .product-art,
 .visual-perplexity.detail-art {
-  background: radial-gradient(circle at 85% 15%, rgba(166, 255, 77, 0.24), transparent 7rem), linear-gradient(135deg, #0d3338, #2aa7a0 58%, #111827);
+  background: radial-gradient(circle at 85% 15%, rgba(148, 163, 184, 0.18), transparent 7rem), linear-gradient(135deg, #070b12, #101827 58%, #05070b);
 }
 
 .visual-netflix .product-art,
@@ -898,7 +898,7 @@ details {
 
 .visual-spotify .product-art,
 .visual-spotify.detail-art {
-  background: radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.22), transparent 7rem), linear-gradient(135deg, #103521, #21c45a 58%, #111827);
+  background: radial-gradient(circle at 85% 15%, rgba(148, 163, 184, 0.18), transparent 7rem), linear-gradient(135deg, #070b12, #101827 58%, #05070b);
 }
 
 .visual-youtube .product-art,
@@ -912,7 +912,7 @@ details {
 }
 
 .plan-thumb.visual-chatgpt {
-  background: linear-gradient(135deg, #12352e, #1ba77a);
+  background: linear-gradient(135deg, #070b12, #101827);
 }
 
 .plan-thumb.visual-claude {
@@ -928,7 +928,7 @@ details {
 }
 
 .plan-thumb.visual-perplexity {
-  background: linear-gradient(135deg, #0d3338, #2aa7a0);
+  background: linear-gradient(135deg, #070b12, #101827);
 }
 
 .plan-thumb.visual-netflix {
@@ -936,7 +936,7 @@ details {
 }
 
 .plan-thumb.visual-spotify {
-  background: linear-gradient(135deg, #103521, #21c45a);
+  background: linear-gradient(135deg, #070b12, #101827);
 }
 
 .plan-thumb.visual-youtube {
@@ -2294,6 +2294,20 @@ textarea {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.035);
+}
+
+.order-record-card.is-resumable {
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.order-record-card.is-resumable:hover,
+.order-record-card.is-resumable:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(240, 185, 11, 0.34);
+  background: rgba(240, 185, 11, 0.08);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.16);
+  outline: none;
 }
 
 .order-record-card div {
@@ -4109,7 +4123,7 @@ h3,
 .hero-product-initial {
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, #d92d3a, #21c45a);
+  background: linear-gradient(135deg, #070b12, #101827);
   color: white;
   font-weight: 950;
 }
@@ -7882,35 +7896,35 @@ body,
 
 .auth-page-form,
 .auth-benefit-panel {
-  border-color: rgba(240, 185, 11, 0.18);
+  border-color: rgba(255, 216, 102, 0.18);
   background:
-    radial-gradient(circle at 8% 4%, rgba(255, 216, 102, 0.2), transparent 16rem),
-    linear-gradient(135deg, #fffdf8 0%, #f8f4e8 58%, #eee8d8 100%);
-  color: #1d1d1f;
-  box-shadow: 0 30px 88px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+    radial-gradient(circle at 8% 4%, rgba(255, 216, 102, 0.18), transparent 16rem),
+    linear-gradient(135deg, rgba(12, 20, 33, 0.96) 0%, rgba(7, 12, 22, 0.98) 58%, rgba(3, 7, 13, 0.98) 100%);
+  color: #f8fafc;
+  box-shadow: 0 30px 88px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .auth-page-form h2,
 .auth-benefit-panel h2,
 .auth-benefit-panel strong {
-  color: #1d1d1f;
+  color: #f8fafc;
 }
 
 .auth-page-form label,
 .auth-switch,
 .auth-benefit-panel span {
-  color: #6b7280;
+  color: #aab6c7;
 }
 
 .auth-page-form input {
-  border: 1px solid rgba(29, 29, 31, 0.09);
-  background: rgba(255, 255, 255, 0.82);
-  color: #111827;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .auth-page-form input::placeholder {
-  color: #8a8f98;
+  color: #7f8b9d;
 }
 
 .auth-page-form .button.primary {
@@ -7921,12 +7935,12 @@ body,
 
 .auth-switch a,
 .auth-benefit-panel .eyebrow {
-  color: #b98300;
+  color: #ffd766;
 }
 
 .auth-benefit-panel div {
-  border-color: rgba(29, 29, 31, 0.08);
-  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .account-wide-card {
@@ -8105,6 +8119,23 @@ body,
   box-shadow: 0 24px 70px rgba(5, 6, 7, 0.1);
 }
 
+.checkout-summary-card .checkout-empty-summary {
+  border-color: rgba(0, 144, 255, 0.9);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(240, 185, 11, 0.14), transparent 12rem),
+    linear-gradient(135deg, rgba(18, 24, 34, 0.96) 0%, rgba(10, 14, 22, 0.98) 62%, rgba(5, 8, 13, 0.98) 100%);
+  color: #f8fafc;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.checkout-summary-card .checkout-empty-summary h3 {
+  color: #f8fafc;
+}
+
+.checkout-summary-card .checkout-empty-summary p {
+  color: rgba(248, 250, 252, 0.72);
+}
+
 .account-page .account-wide-card,
 .account-page .auth-gate,
 .account-page .account-empty-state {
@@ -8126,23 +8157,23 @@ body,
 .account-menu {
   min-width: 178px;
   padding: 0.55rem;
-  border-color: rgba(240, 185, 11, 0.2);
+  border-color: rgba(255, 216, 102, 0.18);
   background:
-    radial-gradient(circle at 8% 0%, rgba(255, 216, 102, 0.22), transparent 9rem),
-    linear-gradient(135deg, #fffdf8 0%, #f8f4e8 62%, #eee8d8 100%);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+    radial-gradient(circle at 8% 0%, rgba(255, 216, 102, 0.16), transparent 9rem),
+    linear-gradient(135deg, rgba(13, 18, 29, 0.98) 0%, rgba(7, 11, 19, 0.98) 62%, rgba(4, 6, 11, 0.98) 100%);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(18px);
 }
 
 .account-menu a,
 .account-menu button {
-  color: #1d1d1f;
+  color: #f8fafc;
 }
 
 .account-menu a:hover,
 .account-menu button:hover {
-  background: linear-gradient(135deg, rgba(255, 216, 102, 0.78), rgba(240, 185, 11, 0.7));
-  color: #050607;
+  background: linear-gradient(135deg, rgba(255, 216, 102, 0.18), rgba(240, 185, 11, 0.12));
+  color: #ffd766;
 }
 
 .site-footer .footer-brand,
@@ -10237,6 +10268,44 @@ main > .section > .section-heading h2,
   height: 100% !important;
   object-fit: cover !important;
   transform: scale(1.12);
+}
+
+.visual-chatgpt .product-art,
+.visual-chatgpt.detail-art,
+.visual-grok .product-art,
+.visual-grok.detail-art,
+.visual-perplexity .product-art,
+.visual-perplexity.detail-art,
+.visual-spotify .product-art,
+.visual-spotify.detail-art {
+  background:
+    radial-gradient(circle at 82% 16%, rgba(148, 163, 184, 0.18), transparent 7rem),
+    linear-gradient(135deg, #070b12, #101827 58%, #05070b) !important;
+}
+
+.plan-thumb,
+.plan-thumb[class*="visual-"],
+.cart-thumb,
+.payment-product-thumb {
+  background: #070b12 !important;
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.plan-thumb img[src*="-icon.svg"] {
+  width: 82% !important;
+  height: 82% !important;
+  padding: 0;
+  object-fit: contain !important;
+  transform: none;
+}
+
+.plan-thumb.visual-chatgpt img[src*="-icon.svg"],
+.plan-thumb.visual-grok img[src*="-icon.svg"],
+.plan-thumb.visual-netflix img[src*="-icon.svg"],
+.plan-thumb.visual-x img[src*="-icon.svg"] {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 
 @media (max-width: 760px) {
